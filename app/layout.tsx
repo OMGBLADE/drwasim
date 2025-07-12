@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import CursorParticles from '@/components/CursorParticles'
+import ClientOnly from '@/components/ClientOnly'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} bg-secondary text-text antialiased`}>
-        <CursorParticles />
+        <ClientOnly>
+          <CursorParticles />
+        </ClientOnly>
         {children}
       </body>
     </html>

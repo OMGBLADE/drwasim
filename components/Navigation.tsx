@@ -18,42 +18,58 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100)
+      if (typeof window !== 'undefined') {
+        setIsScrolled(window.scrollY > 100)
+      }
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll)
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
   }, [])
 
   useEffect(() => {
     // Load preference from localStorage
-    const stored = localStorage.getItem('theme')
-    if (stored === 'dark') {
-      setTheme('dark')
-      document.documentElement.classList.remove('theme-light')
-      document.documentElement.classList.add('theme-dark')
-    } else {
-      setTheme('light')
-      document.documentElement.classList.remove('theme-dark')
-      document.documentElement.classList.add('theme-light')
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('theme')
+      if (stored === 'dark') {
+        setTheme('dark')
+        document.documentElement.classList.remove('theme-light')
+        document.documentElement.classList.add('theme-dark')
+      } else {
+        setTheme('light')
+        document.documentElement.classList.remove('theme-dark')
+        document.documentElement.classList.add('theme-light')
+      }
     }
   }, [])
 
   useEffect(() => {
     if (theme === 'dark') {
-      document.documentElement.classList.remove('theme-light')
-      document.documentElement.classList.add('theme-dark')
-      localStorage.setItem('theme', 'dark')
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove('theme-light')
+        document.documentElement.classList.add('theme-dark')
+        localStorage.setItem('theme', 'dark')
+      }
     } else {
-      document.documentElement.classList.remove('theme-dark')
-      document.documentElement.classList.add('theme-light')
-      localStorage.setItem('theme', 'light')
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove('theme-dark')
+        document.documentElement.classList.add('theme-light')
+        localStorage.setItem('theme', 'light')
+      }
     }
   }, [theme])
 
   const handleNavClick = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+    if (typeof document !== 'undefined') {
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
     setIsMobileMenuOpen(false)
   }

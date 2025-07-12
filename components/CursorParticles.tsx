@@ -15,24 +15,13 @@ function randomColor() {
 
 export default function CursorParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const mouse = useRef({ x: 0, y: 0 });
   const particles = useRef<any[]>([]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.current = { x: e.clientX, y: e.clientY };
-      // Add a new particle at the cursor
-      particles.current.push({
-        x: e.clientX,
-        y: e.clientY,
-        radius: 7 + Math.random() * 6,
-        color: randomColor(),
-        alpha: 1,
-        life: 0,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    if (typeof window !== 'undefined') {
+      mouse.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    }
   }, []);
 
   useEffect(() => {
@@ -42,11 +31,15 @@ export default function CursorParticles() {
     let animationId: number;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (typeof window !== 'undefined') {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
     };
     resize();
-    window.addEventListener('resize', resize);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', resize);
+    }
 
     function drawCursor() {
       if (!ctx) return;
@@ -62,7 +55,9 @@ export default function CursorParticles() {
 
     function animate() {
       if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (typeof window !== 'undefined') {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      }
       // Draw particles
       for (let i = 0; i < particles.current.length; i++) {
         const p = particles.current[i];
@@ -89,16 +84,44 @@ export default function CursorParticles() {
     }
     animate();
     return () => {
-      window.removeEventListener('resize', resize);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', resize);
+      }
       cancelAnimationFrame(animationId);
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      mouse.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      const handleMouseMove = (e: MouseEvent) => {
+        mouse.current = { x: e.clientX, y: e.clientY };
+        // Add a new particle at the cursor
+        particles.current.push({
+          x: e.clientX,
+          y: e.clientY,
+          radius: 7 + Math.random() * 6,
+          color: randomColor(),
+          alpha: 1,
+          life: 0,
+        });
+      };
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
+    }
+  }, []);
+
   // Hide the default cursor
   useEffect(() => {
-    document.body.style.cursor = 'none';
+    if (typeof document !== 'undefined') {
+      document.body.style.cursor = 'none';
+    }
     return () => {
-      document.body.style.cursor = '';
+      if (typeof document !== 'undefined') {
+        document.body.style.cursor = '';
+      }
     };
   }, []);
 

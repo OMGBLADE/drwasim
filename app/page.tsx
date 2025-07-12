@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -16,7 +16,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   // Typewriter effect: strictly alternate typing and deleting
-  const professions = [' Doctor', '  ML Engineer', ' Researcher', '  Teacher']
+  const professions = useMemo(() => [' Doctor', '  ML Engineer', ' Researcher', '  Teacher'], [])
   const [currentProfession, setCurrentProfession] = useState(0)
   const [displayed, setDisplayed] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)

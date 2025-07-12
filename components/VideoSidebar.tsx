@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 
 interface VideoItem {
   id: string
@@ -150,9 +151,11 @@ export default function VideoSidebar() {
                       onClick={() => handleVideoSelect(video)}
                     >
                       <div className="relative mb-3">
-                        <img
+                        <Image
                           src={video.thumbnail}
                           alt={video.title}
+                          width={400}
+                          height={225}
                           className="w-full h-32 object-cover rounded-lg"
                         />
                         <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
@@ -185,9 +188,11 @@ export default function VideoSidebar() {
                 >
                   <h4 className="font-semibold mb-2">{selectedVideo.title}</h4>
                   <div className="relative">
-                    <img
+                    <Image
                       src={selectedVideo.thumbnail}
                       alt={selectedVideo.title}
+                      width={400}
+                      height={225}
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center">

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
+import Image from 'next/image'
 
 interface Testimonial {
   id: string
@@ -162,9 +163,11 @@ export default function TestimonialSection() {
                   <div className="flex items-center mb-6">
                     <div className="flex-1">
                       <div className="flex items-center mb-4">
-                        <img
+                        <Image
                           src={testimonials[currentIndex].avatar}
                           alt={testimonials[currentIndex].name}
+                          width={64}
+                          height={64}
                           className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-accent"
                         />
                         <div>
@@ -182,11 +185,11 @@ export default function TestimonialSection() {
                         ))}
                       </div>
                     </div>
-                    <div className="text-6xl opacity-20">"</div>
+                    <div className="text-6xl opacity-20">&ldquo;</div>
                   </div>
                   
                   <blockquote className="text-lg md:text-xl text-muted leading-relaxed italic mb-6">
-                    "{testimonials[currentIndex].content}"
+                    &ldquo;{testimonials[currentIndex].content}&rdquo;
                   </blockquote>
                   
                   <div className="mt-auto">
